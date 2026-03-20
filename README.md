@@ -69,6 +69,8 @@ Flags:
 # Convert the SAM file to BAM file
 samtools view -bS HISAT_OUT.sam > HISAT_OUT.bam
 ```
+- -b: output in BAM format
+- -S: input in SAM format
 
 ### Step 4: Sorting and Indexing
 ```
@@ -105,42 +107,42 @@ PR_3	[path]/Pre_3.bam	Pre	paired	forward
 ```
 
 ### Step 2: DEA with metaseqR2
+Differential gene expression analysis aims to identify genes that exhibit significant changes in expression levels between two or more conditions.
+
 In R, run the following command.
 ```
 # example command
 library(metaseqR2)
 
-targetsFile <- "[path]/targets.txt"
+targetsFile <- read.delim("[path]/targets.txt", header=TRUE, stringsAsFactors=FALSE)
 
 # Define the contrast: Post vs Pre
 theContrasts <- c("Post_vs_Pre")
 
 metaseqr2(
-    sampleList=targetsFile,
-    contrast=theContrasts,
-    org="hg19",
-    countType="exon",
-    normalization="deseq2",
-    statistics="deseq2",
+    sampleList=targetsFile,    # sample metadata
+    contrast=theContrasts,     # comparison to perform
+    org="hg19",                # reference genome
+    countType="exon",          # count reads per exon, summarize to gene level
+    normalization="deseq2",    # DESeq2 normalisation
+    statistics="deseq2",       # DESeq2 statistical testing
     figFormat="png",
     qcPlots=c(
         "mds","biodetection","countsbio","saturation",
         "correl","boxplot","meandiff","meanvar","volcano","mastat"
     ),
-    exportWhere="./metaseqr2_output",
-    pcut=0.05,
+    exportWhere="./metaseqr2_output",       # output folder
+    pcut=0.05,                              # adjusted p-value cutoff for DE calls
     restrictCores=0.25,
     exportWhat=c("annotation","p_value","adj_p_value","fold_change",
         "counts","flags"),
-    exportScale=c("natural","log2","rpgm"),
-    exportValues="normalized",
+    exportScale=c("natural","log2","rpgm"),     # export counts in multiple scales
+    exportValues="normalized",                  # export normalised counts 
     saveGeneModel=TRUE,
-    reportTop=0.1,
+    reportTop=0.1                               # show top 10% DE genes in the HTML report
 )
 
 ```
-
-### Step 3: Alignment metrics
 
 ## Acknowledgements
  
