@@ -146,4 +146,4 @@ metaseqr2(
 
 ## Acknowledgements
  
-This project was developed as part of the Applied Bioinformatics course in the MSc programme. The project design, dataset, tutorial materials, and HPC environment were provided by the course instructor.
+This project was developed as part of the Applied Bioinformatics course in the MSc programme. The project design, dataset and tutorial materials were provided by the course instructor, Dr. Moulos.
